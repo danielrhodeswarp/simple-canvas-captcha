@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/simple_canvas_captcha.js"></script>
+</head>
+<body>
+
+<h1>simple-canvas-captcha</h1>
+    
+<form method="post" action="server.php">
+    <fieldset>
+        <legend>Requisite stuff</legend>
+        
+        <div>
+            <label>Name</label>
+            <input type="text" name="name">
+            
+        </div>
+        <div>
+            <label>Pet's name</label>
+            <input type="text" name="pets-name">
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Are you human?</legend>
+        
+        <div>
+            <label>What shape is this?</label>
+            <canvas id="put-canvas-here"></canvas>
+            <button type="button" onclick="drawRandomShapeOnCanvas();">reload</button>
+            
+            <br>
+            <input type="text" name="captcha-answer">
+        </div>
+    </fieldset>
+    
+    <input type="hidden" id="pixel-data" name="pixel-data">
+    
+    
+    <input type="submit">
+</form>
+
+<script>startSimpleCanvasCaptcha('put-canvas-here');</script>
+</body>    
+</html>
