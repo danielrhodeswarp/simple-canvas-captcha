@@ -109,29 +109,32 @@ for($loop = 0; $loop < $height; $loop++)
     {
         //extraneous (or missing) pixels per total count of pixels in source row
         $percentageDiff = $distance / count(array_keys($pixelGrid[$loop], 1));
+            //note that we sometimes - but very rarely - get a divide by zero here (ie. count(array_keys($pixelGrid[$loop], 1)) is zero)
     }
     
     $totalPercentageDiff += $percentageDiff;
 }
 
 $averagePercentageDiff = $totalPercentageDiff / $height;
+$averagePercentageDiffHuman = $averagePercentageDiff * 100;
 
 //show what *we* know about the shape-------------------------------------------
-echo "<p>Percentage difference (of actual shape) from bounding square = {$averagePercentageDiff}%</p>";
+echo "<p>Percentage difference (of actual shape) from bounding square = {$averagePercentageDiffHuman}%</p>";
 
 $shape = '';
+$CUTOFF = 0.40; //see percentage_difference_results.txt
 
 if($averagePercentageDiff == 0)
 {
     $shape = 'square';
 }
 
-elseif($averagePercentageDiff < 1)
+elseif($averagePercentageDiff < $CUTOFF)
 {
     $shape = 'circle';
 }
 
-elseif($averagePercentageDiff > 1)
+elseif($averagePercentageDiff >= $CUTOFF)
 {
     $shape = 'triangle';
 }

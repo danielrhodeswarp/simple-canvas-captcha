@@ -1,0 +1,120 @@
+canvas size = 90x70 (uncontrolled triangles)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tri:
+205.44
+251.59
+329.71
+387.59
+47.78 (small right-angled triangle)
+242.49
+261.26
+58.23
+205.87
+237.85
+38.71 (small right-angled triangle)
+80.83 
+
+circle:
+36.44
+23.97
+34.81
+32.13
+32.13
+26.29
+30.75
+37.42 (quite large circle)
+23.97
+37.42 (quite large circle)
+
+conclusion: use "less than 40 equals circle" (not perfect but hey)
+
+
+canvas size = 190x170 (uncontrolled triangles)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tri:
+61.95
+169.16
+1425.05 (needle sliver)
+11.30 !
+91.21
+225.62
+233.08
+402.94
+206.98
+194.10
+
+circle:
+11.66
+34.51
+20.09
+29.28
+12.66
+30.08
+15.00
+30.33
+
+conclusion: ???!??? p'raps try to control the triangles...
+
+
+canvas size = 90x70 (controlled triangles)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tri:
+148.06
+146.93
+125.56
+167.20
+648.20
+141.69
+58.66 (small triangle in centre)
+59.58 (small triangle in centre)
+79.68
+38.03 (tiny triangle in centre)
+
+
+circle:
+32.13
+22.00
+20.14
+32.13
+26.29
+22.00
+22.00
+36.44
+39.33 (large circle)
+
+conclusion: ??
+
+canvas size = 190x170 (controlled triangles)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tri:
+152.14
+428.16
+454.29
+96.26
+219.08
+48.43 (not so narrow but flat and central triangle)
+65.63
+46.76
+
+
+
+circle:
+43.58 (large circle)
+36.71
+38.34
+28.82
+9.06 (small circle)
+43.04 (large circle)
+
+conclusion: ??
+
+
+
+
+
+
+

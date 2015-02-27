@@ -1,8 +1,8 @@
 var globalCanvasContext;
 var globalCanvasElement;
 var globalAvailableShapes = ['square', 'triangle', 'circle'];
-var globalCanvasWidth = 90;
-var globalCanvasHeight = 70;
+var globalCanvasWidth = 190;
+var globalCanvasHeight = 170;
 var globalMaxSquareSize = globalCanvasHeight;
 
 function startSimpleCanvasCaptcha(idOfCanvasElement)
@@ -107,7 +107,7 @@ function drawShape(shape)
 }
 
 //put each point in a separate quadrant?
-function drawTriangle()
+function drawTriangle_INITIAL_ATTEMPT_UNCONTROLLED()
 {
     //get three random points (ideally checking they not on same line!)
     //("don't draw a triangle that's too slim" not yet supported)
@@ -116,6 +116,51 @@ function drawTriangle()
     points[0] = {x:getRandomInt(0, globalCanvasWidth), y:getRandomInt(0, globalCanvasHeight)};
     points[1] = {x:getRandomInt(0, globalCanvasWidth), y:getRandomInt(0, globalCanvasHeight)};
     points[2] = {x:getRandomInt(0, globalCanvasWidth), y:getRandomInt(0, globalCanvasHeight)};
+    
+    globalCanvasContext.fillStyle = '#0000ff';
+    globalCanvasContext.beginPath();
+    // Draw a triangle having each point (it will return to first point)
+    globalCanvasContext.moveTo(points[0].x, points[0].y);
+    globalCanvasContext.lineTo(points[1].x, points[1].y);
+    globalCanvasContext.lineTo(points[2].x, points[2].y);
+    globalCanvasContext.closePath();
+    globalCanvasContext.fill();
+    //globalCanvasContext.stroke();
+}
+
+//choose, randomly, three different quadrants and put a point in each
+//(to avoid odd-looking shapes that confuse the user *and* our server algo's!)
+function drawTriangle()
+{
+    //map four quadrants of the canvas (from top-left clockwise)
+    var quads = [{x1:0, y1:0, x2:globalCanvasWidth / 2, y2:globalCanvasHeight / 2},
+        {x1:globalCanvasWidth / 2, y1:0, x2:globalCanvasWidth, y2:globalCanvasHeight / 2},
+        {x1:globalCanvasWidth / 2, y1:globalCanvasHeight / 2, x2:globalCanvasWidth, y2:globalCanvasHeight},
+        {x1:0, y1:globalCanvasHeight / 2, x2:globalCanvasWidth / 2, y2:globalCanvasHeight}];
+    console.log(quads);
+    //get three random quadrants to put our triangle points in
+    var quadsToUse = [];
+    quadsToUse.push(getRandomInt(0, 4));    //index into quads[]
+    
+    //add next two quads
+    quadsToUse.push(quadsToUse[0] + 1);
+    quadsToUse.push(quadsToUse[1] + 1);
+    
+    //clip in case we've gone higher than index of 3 (4 => 0, 5 => 1, etc)
+    for(var loop = 0; loop < quadsToUse.length; loop++)
+    {
+        if(quadsToUse[loop] > 3)
+        {
+            quadsToUse[loop] -= 4;
+        }
+    }
+    console.log(quadsToUse);
+    
+    var points = [];
+    
+    points[0] = {x:getRandomInt(quads[quadsToUse[0]].x1, quads[quadsToUse[0]].x2), y:getRandomInt(quads[quadsToUse[0]].y1, quads[quadsToUse[0]].y2)};
+    points[1] = {x:getRandomInt(quads[quadsToUse[1]].x1, quads[quadsToUse[1]].x2), y:getRandomInt(quads[quadsToUse[1]].y1, quads[quadsToUse[1]].y2)};
+    points[2] = {x:getRandomInt(quads[quadsToUse[2]].x1, quads[quadsToUse[2]].x2), y:getRandomInt(quads[quadsToUse[2]].y1, quads[quadsToUse[2]].y2)};
     
     globalCanvasContext.fillStyle = '#0000ff';
     globalCanvasContext.beginPath();
