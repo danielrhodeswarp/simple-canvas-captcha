@@ -24,6 +24,7 @@ for($loop = 0; $loop < count($pixelArray); $loop += $width)
 }
 
 //get bounding box coords-------------------------------------------------------
+//AND pixel area of shape at same time------------------------------------------
 //get leftmost x, rightmost x, uppermost y, lowermost(?) y
 //then we can do some cheesy image proc'ing
 
@@ -31,6 +32,7 @@ $leftmostX = $width;
 $rightmostX = 0;
 $uppermostY = $height;
 $lowermostY = 0;    //is "lowermost" an actual word?!
+$shapeArea = 0;
 
 foreach($pixelGrid as $yValue => $row)
 {
@@ -40,6 +42,9 @@ foreach($pixelGrid as $yValue => $row)
     {
         continue;
     }
+    
+    //increase total area
+    $shapeArea += count($litPixels);
     
     //y check--------
     if($yValue < $uppermostY)
@@ -67,76 +72,31 @@ foreach($pixelGrid as $yValue => $row)
     }
 }
 
-echo "<p>Bounding square is [{$leftmostX}, {$uppermostY}, {$rightmostX}, {$lowermostY}]</p>";
+$boundArea = (($rightmostX - $leftmostX) + 1 ) * (($lowermostY - $uppermostY) + 1);
+$areaPercentage = $shapeArea / $boundArea;
+$areaPercentageHuman = $areaPercentage * 100;
 
-//make a blank 2D pixel array---------------------------------------------------
-$blank = array();
-
-for($loop = 0; $loop < $height; $loop++)
-{
-    $blank[$loop] = array_fill(0, $width, 0);
-}
-
-//put calculated bounding square on blank canvas--------------------------------
-$square = $blank;
-
-for($loop = $uppermostY; $loop <= $lowermostY; $loop++)
-{
-    for($innerLoop = $leftmostX; $innerLoop <= $rightmostX; $innerLoop++)
-    {
-        $square[$loop][$innerLoop] = 1;
-    }
-}
-
-//compare original against $square using some statistical jiggery-pokery--------
-$totalPercentageDiff = 0;
-
-for($loop = 0; $loop < $height; $loop++)
-{
-    //get original and bounding square rows as strings of zeros and ones
-    $originalString = implode('', $pixelGrid[$loop]);
-    $boundSquareString = implode('', $square[$loop]);
-    
-    //----using levenshtein() [returns the difference or "distance"] we can
-    //get the count of "pixel" (actually character) changes needed to go from the original
-    //to our bounding square)
-    $distance = levenshtein($originalString, $boundSquareString);
-        
-    //calc difference percentage
-    $percentageDiff = 0;
-    
-    if($distance != 0)  //ie. if pixel rows differ
-    {
-        //extraneous (or missing) pixels per total count of pixels in source row
-        $percentageDiff = $distance / count(array_keys($pixelGrid[$loop], 1));
-            //note that we sometimes - but very rarely - get a divide by zero here (ie. count(array_keys($pixelGrid[$loop], 1)) is zero)
-    }
-    
-    $totalPercentageDiff += $percentageDiff;
-}
-
-$averagePercentageDiff = $totalPercentageDiff / $height;
-$averagePercentageDiffHuman = $averagePercentageDiff * 100;
-
-//show what *we* know about the shape-------------------------------------------
-echo "<p>Percentage difference (of actual shape) from bounding square = {$averagePercentageDiffHuman}%</p>";
+echo "<p>Bounding rectangle is [{$leftmostX}, {$uppermostY}, {$rightmostX}, {$lowermostY}]</p>";
+echo "<p>Bounding rectangle area is: {$boundArea}</p>";
+echo "<p>Shape area is: {$shapeArea}</p>";
+echo "<p>Shape area / bounding rectangle area is: {$areaPercentageHuman}%</p>";
 
 $shape = '';
-$CUTOFF = 0.40; //see percentage_difference_results.txt
+$CUTOFF = 0.75; //see percentage_difference_results.txt
 
-if($averagePercentageDiff == 0)
+if($areaPercentage == 1)
 {
     $shape = 'square';
 }
 
-elseif($averagePercentageDiff < $CUTOFF)
-{
-    $shape = 'circle';
-}
-
-elseif($averagePercentageDiff >= $CUTOFF)
+elseif($areaPercentage < $CUTOFF)
 {
     $shape = 'triangle';
+}
+
+elseif($areaPercentage >= $CUTOFF)
+{
+    $shape = 'circle';
 }
 
 echo "<p>I deduce that the shape is a: {$shape}</p>";

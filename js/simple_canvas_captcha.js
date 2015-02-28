@@ -1,24 +1,36 @@
 var globalCanvasContext;
 var globalCanvasElement;
 var globalAvailableShapes = ['square', 'triangle', 'circle'];
-var globalCanvasWidth = 190;
-var globalCanvasHeight = 170;
+var globalCanvasWidth = 90;
+var globalCanvasHeight = 70;
 var globalMaxSquareSize = globalCanvasHeight;
 
 function startSimpleCanvasCaptcha(idOfCanvasElement)
 {
-    initialiseCanvas(idOfCanvasElement);
-    drawRandomShapeOnCanvas();
+    if(initialiseCanvas(idOfCanvasElement))
+    {
+        drawRandomShapeOnCanvas();
+    }
 }
 
 function initialiseCanvas(idOfCanvasElement)
 {
     globalCanvasElement = document.getElementById(idOfCanvasElement);
     
+    if(!globalCanvasElement)
+    {
+        return false;
+    }
+    
     //if(canvas.getContext){}else{}
     
     
     globalCanvasContext = globalCanvasElement.getContext('2d');
+    
+    if(!globalCanvasContext)
+    {
+        return false;
+    }
     
     //do here? (or in CSS?)
     globalCanvasElement.width = globalCanvasWidth;
@@ -27,6 +39,8 @@ function initialiseCanvas(idOfCanvasElement)
     globalCanvasElement.style.backgroundColor = '#ffa';
     globalCanvasElement.style.padding = '10px';
     //globalCanvasContext.
+    
+    return true;
 }
 
 function drawRandomShapeOnCanvas()
