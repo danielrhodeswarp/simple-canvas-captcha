@@ -36,6 +36,7 @@ function deduce_simple_canvas_captcha($pixelString, $reporting = false)
 
     //arrayify per pixel
     $pixelArray = str_split($pixelArray[0]);
+    //$pixelArray = preg_split('//', $pixelArray[0], -1, PREG_SPLIT_NO_EMPTY);
 
     //put pixel data into a 2D array--------------------------------------------
     $pixelGrid = array();
