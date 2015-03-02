@@ -33,11 +33,11 @@ function deduce_simple_canvas_captcha($pixelString, $reporting = false)
     //take canvas height and width off the array
     $height = array_pop($pixelArray);
     $width = array_pop($pixelArray);
-
+    
     //arrayify per pixel
-    $pixelArray = str_split($pixelArray[0]);
-    //$pixelArray = preg_split('//', $pixelArray[0], -1, PREG_SPLIT_NO_EMPTY);
-
+    $pixelArray = str_split($pixelArray[0]);    //strangely will give array(1) { [0]=> string(0) "" }  if input is null or empty string
+    //$pixelArray = preg_split('//', $pixelArray[0], -1, PREG_SPLIT_NO_EMPTY);    //intuitively will give array(0) { } if input is null or empty string
+    
     //put pixel data into a 2D array--------------------------------------------
     $pixelGrid = array();
 
